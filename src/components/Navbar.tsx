@@ -200,7 +200,7 @@ export const Navbar = ({ opacity, isScrolled, isOverDark }: { opacity: any, isSc
             <div className="flex justify-between items-center px-6 py-6 border-b border-charcoal/10">
               <Link to="/" className="flex items-center gap-2 text-charcoal">
                 <img 
-                  src="/removed-background.png" 
+                  src="/imagine-fara-fundal (2).png" 
                   alt="EQ Dent Logo" 
                   className="h-10 w-auto object-contain"
                 />
