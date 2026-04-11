@@ -62,7 +62,7 @@ export const Navbar = ({ opacity, isScrolled, isOverDark }: { opacity: any, isSc
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2 md:gap-3 shrink-0">
           <img 
-            src="/removed-background.png" 
+            src="/imagine-fara-fundal (2).png" 
             alt="EQ Dent Logo" 
             className="h-10 sm:h-12 md:h-16 w-auto object-contain"
           />
