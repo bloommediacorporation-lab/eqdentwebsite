@@ -405,7 +405,7 @@ export default function App() {
   });
 
   useMotionValueEvent(scrollY, "change", (latest) => {
-    const heroEnd = window.innerHeight * 2; // Approximate end of the sticky hero section
+    const heroEnd = window.innerWidth < 768 ? window.innerHeight * 0.5 : window.innerHeight * 2; // Approximate end of the sticky hero section
     
     if (latest < 50) {
       setNavOpacity(1);
@@ -423,7 +423,7 @@ export default function App() {
     let overDark = false;
     
     // On mobile, the hero section video is full screen, so the background is dark
-    if (window.innerWidth < 768 && latest < window.innerHeight * 2) {
+    if (window.innerWidth < 768 && latest < heroEnd) {
       overDark = true;
     }
     
@@ -466,7 +466,7 @@ export default function App() {
     <div className="min-h-screen bg-cream selection:bg-gold selection:text-white">
       <Navbar opacity={navOpacity} isScrolled={isScrolled} isOverDark={isOverDark} />
       
-      <div ref={containerRef} className="relative h-[300vh]">
+      <div ref={containerRef} className="relative h-[150vh] md:h-[300vh]">
         <Hero scrollYProgress={scrollYProgress} />
       </div>
 

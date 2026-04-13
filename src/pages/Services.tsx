@@ -237,7 +237,7 @@ export default function ServicesPage() {
       <Navbar opacity={navOpacity} isScrolled={isScrolled} isOverDark={isOverDark} />
       
       {/* Fixed Hero Section */}
-      <section className="fixed inset-0 w-full h-screen overflow-hidden flex flex-col justify-end pb-12 md:pb-24 px-6 md:px-12 z-0 bg-cream">
+      <section className="fixed inset-0 w-full h-[100dvh] overflow-hidden flex flex-col justify-end pb-32 md:pb-24 px-6 md:px-12 z-0 bg-cream">
         {/* Background Video */}
         <motion.video 
           style={{ opacity: videoOpacity }}
