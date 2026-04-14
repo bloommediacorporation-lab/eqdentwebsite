@@ -250,6 +250,7 @@ const About = () => {
               style={{ y: imageY, scale: 1.15 }}
               src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?q=80&w=1200&auto=format&fit=crop" 
               alt="EQ Dent Clinic" 
+              loading="lazy"
               className="absolute inset-0 w-full h-full object-cover grayscale contrast-125 brightness-90"
             />
             {/* Subtle overlay for mood */}
@@ -369,7 +370,7 @@ const Testimonials = () => {
               className={`w-2 h-2 rounded-full transition-all duration-500 ${
                 idx === currentIndex ? 'bg-gold w-8' : 'bg-charcoal/20 hover:bg-charcoal/40'
               }`}
-              aria-label={`Go to review ${idx + 1}`}
+              aria-label={`Vezi recenzia ${idx + 1}`}
             />
           ))}
         </div>
@@ -450,14 +451,16 @@ export default function App() {
       touchMultiplier: 2,
     });
 
+    let rafId: number;
     function raf(time: number) {
       lenis.raf(time);
-      requestAnimationFrame(raf);
+      rafId = requestAnimationFrame(raf);
     }
 
-    requestAnimationFrame(raf);
+    rafId = requestAnimationFrame(raf);
 
     return () => {
+      cancelAnimationFrame(rafId);
       lenis.destroy();
     };
   }, []);

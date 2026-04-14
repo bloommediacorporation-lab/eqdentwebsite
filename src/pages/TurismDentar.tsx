@@ -6,6 +6,57 @@ import { useScroll, useMotionValueEvent, motion, useTransform } from 'motion/rea
 import { Wallet, ShieldCheck, Clock, ClipboardList, Plane, Map, ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
+const avantaje = [
+  {
+    icon: <Wallet size={28} />,
+    title: "Costuri mai eficiente",
+    desc: "Comparativ cu tratamente similare din vestul Europei"
+  },
+  {
+    icon: <ShieldCheck size={28} />,
+    title: "Standarde medicale înalte",
+    desc: "Materiale premium și protocoale sigure de tratament"
+  },
+  {
+    icon: <Clock size={28} />,
+    title: "Programări într-un timp scurt",
+    desc: "Fără luni întregi de așteptare pentru intervenții importante"
+  },
+  {
+    icon: <ClipboardList size={28} />,
+    title: "Plan clar înainte de vizită",
+    desc: "Știi din timp pașii tratamentului și durata estimată"
+  },
+  {
+    icon: <Plane size={28} />,
+    title: "Suport pe tot parcursul șederii",
+    desc: "Ajutor pentru organizarea vizitei, transportului și programărilor"
+  },
+  {
+    icon: <Map size={28} />,
+    title: "Tratament într-un oraș care merită vizitat",
+    desc: "Poți descoperi Sibiul în timpul perioadei de tratament"
+  }
+];
+
+const steps = [
+  {
+    num: "1",
+    title: "Contactează-ne online",
+    desc: "Trimite-ne istoricul tău medical și câteva fotografii și radiografii."
+  },
+  {
+    num: "2",
+    title: "Vei primi un plan personalizat",
+    desc: "De tratament și costuri estimate."
+  },
+  {
+    num: "3",
+    title: "Organizăm totul împreună",
+    desc: "Programări, cazare, transferuri, activități."
+  }
+];
+
 export default function TurismDentar() {
   const { scrollY } = useScroll();
   const [isScrolled, setIsScrolled] = useState(false);
@@ -49,65 +100,18 @@ export default function TurismDentar() {
       smoothWheel: true,
     });
 
+    let rafId: number;
     function raf(time: number) {
       lenis.raf(time);
-      requestAnimationFrame(raf);
+      rafId = requestAnimationFrame(raf);
     }
 
-    requestAnimationFrame(raf);
-    return () => lenis.destroy();
+    rafId = requestAnimationFrame(raf);
+    return () => {
+      cancelAnimationFrame(rafId);
+      lenis.destroy();
+    };
   }, []);
-
-  const avantaje = [
-    {
-      icon: <Wallet size={28} />,
-      title: "Costuri mai eficiente",
-      desc: "Comparativ cu tratamente similare din vestul Europei"
-    },
-    {
-      icon: <ShieldCheck size={28} />,
-      title: "Standarde medicale înalte",
-      desc: "Materiale premium și protocoale sigure de tratament"
-    },
-    {
-      icon: <Clock size={28} />,
-      title: "Programări într-un timp scurt",
-      desc: "Fără luni întregi de așteptare pentru intervenții importante"
-    },
-    {
-      icon: <ClipboardList size={28} />,
-      title: "Plan clar înainte de vizită",
-      desc: "Știi din timp pașii tratamentului și durata estimată"
-    },
-    {
-      icon: <Plane size={28} />,
-      title: "Suport pe tot parcursul șederii",
-      desc: "Ajutor pentru organizarea vizitei, transportului și programărilor"
-    },
-    {
-      icon: <Map size={28} />,
-      title: "Tratament într-un oraș care merită vizitat",
-      desc: "Poți descoperi Sibiul în timpul perioadei de tratament"
-    }
-  ];
-
-  const steps = [
-    {
-      num: "1",
-      title: "Contactează-ne online",
-      desc: "Trimite-ne istoricul tău medical și câteva fotografii și radiografii."
-    },
-    {
-      num: "2",
-      title: "Vei primi un plan personalizat",
-      desc: "De tratament și costuri estimate."
-    },
-    {
-      num: "3",
-      title: "Organizăm totul împreună",
-      desc: "Programări, cazare, transferuri, activități."
-    }
-  ];
 
   return (
     <div className="min-h-screen bg-cream selection:bg-gold selection:text-white">

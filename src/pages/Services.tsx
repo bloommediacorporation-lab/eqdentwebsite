@@ -165,6 +165,13 @@ const servicesData = [
   }
 ];
 
+const paragraphs = [
+  "Indiferent dacă dorești să corectezi imperfecțiuni minore sau să obții o transformare completă a zâmbetului, soluțiile noastre abordează o gamă largă de nevoi estetice și funcționale. De la albire dentară la fațete din porțelan și reabilitări orale complexe, adaptăm fiecare tratament dorințelor tale unice, asigurând o experiență confortabilă și personalizată.",
+  "Echipa noastră de profesioniști folosește cele mai noi tehnologii și tehnici pentru a restabili și îmbunătăți aspectul dinților tăi, oferindu-ți încrederea de a zâmbi liber. Fie că ești în căutarea unor îmbunătățiri subtile sau a unei transformări dramatice, serviciile noastre premium te pot ajuta să obții zâmbetul pe care ți l-ai dorit dintotdeauna.",
+  "Folosim materiale de ultimă generație și tehnici avansate pentru a ne asigura că fiecare restaurare arată și se simte natural, fiind în același timp durabilă și de lungă durată. Abordarea noastră se concentrează nu doar pe estetică, ci și pe sănătatea și funcționalitatea dinților tăi, asigurându-ne că zâmbetul tău este la fel de puternic pe cât este de frumos."
+];
+const totalWords = paragraphs.reduce((acc, p) => acc + p.split(" ").length, 0);
+
 export default function ServicesPage() {
   const { scrollY } = useScroll();
   const [isScrolled, setIsScrolled] = useState(false);
@@ -177,13 +184,6 @@ export default function ServicesPage() {
     target: paragraphsRef,
     offset: ["start 85%", "end 50%"]
   });
-
-  const paragraphs = [
-    "Indiferent dacă dorești să corectezi imperfecțiuni minore sau să obții o transformare completă a zâmbetului, soluțiile noastre abordează o gamă largă de nevoi estetice și funcționale. De la albire dentară la fațete din porțelan și reabilitări orale complexe, adaptăm fiecare tratament dorințelor tale unice, asigurând o experiență confortabilă și personalizată.",
-    "Echipa noastră de profesioniști folosește cele mai noi tehnologii și tehnici pentru a restabili și îmbunătăți aspectul dinților tăi, oferindu-ți încrederea de a zâmbi liber. Fie că ești în căutarea unor îmbunătățiri subtile sau a unei transformări dramatice, serviciile noastre premium te pot ajuta să obții zâmbetul pe care ți l-ai dorit dintotdeauna.",
-    "Folosim materiale de ultimă generație și tehnici avansate pentru a ne asigura că fiecare restaurare arată și se simte natural, fiind în același timp durabilă și de lungă durată. Abordarea noastră se concentrează nu doar pe estetică, ci și pe sănătatea și funcționalitatea dinților tăi, asigurându-ne că zâmbetul tău este la fel de puternic pe cât este de frumos."
-  ];
-  const totalWords = paragraphs.reduce((acc, p) => acc + p.split(" ").length, 0);
 
   const videoOpacity = useTransform(scrollY, [0, 300], [1, 0]);
   const textColor = useTransform(scrollY, [0, 300], ["#ffffff", "#1A1A1A"]);
@@ -223,13 +223,17 @@ export default function ServicesPage() {
       smoothWheel: true,
     });
 
+    let rafId: number;
     function raf(time: number) {
       lenis.raf(time);
-      requestAnimationFrame(raf);
+      rafId = requestAnimationFrame(raf);
     }
 
-    requestAnimationFrame(raf);
-    return () => lenis.destroy();
+    rafId = requestAnimationFrame(raf);
+    return () => {
+      cancelAnimationFrame(rafId);
+      lenis.destroy();
+    };
   }, []);
 
   return (

@@ -35,6 +35,29 @@ const RevealText = ({ text, className }: { text: string, className?: string }) =
   );
 };
 
+const benefits = [
+  {
+    icon: <CreditCard size={28} />,
+    title: "Până la 10 Rate",
+    desc: "Eșalonare flexibilă pentru orice tip de tratament complex."
+  },
+  {
+    icon: <CheckCircle2 size={28} />,
+    title: "Aprobare Rapidă",
+    desc: "Proces simplificat, fără birocrație inutilă."
+  },
+  {
+    icon: <ShieldCheck size={28} />,
+    title: "Siguranță Totală",
+    desc: "Parteneriate cu instituții financiare de încredere."
+  },
+  {
+    icon: <Wallet size={28} />,
+    title: "Fără Presiune",
+    desc: "Prioritizați sănătatea fără a compromite bugetul personal."
+  }
+];
+
 export default function PlataRate() {
   const { scrollY } = useScroll();
   const [isScrolled, setIsScrolled] = useState(false);
@@ -78,37 +101,18 @@ export default function PlataRate() {
       smoothWheel: true,
     });
 
+    let rafId: number;
     function raf(time: number) {
       lenis.raf(time);
-      requestAnimationFrame(raf);
+      rafId = requestAnimationFrame(raf);
     }
 
-    requestAnimationFrame(raf);
-    return () => lenis.destroy();
+    rafId = requestAnimationFrame(raf);
+    return () => {
+      cancelAnimationFrame(rafId);
+      lenis.destroy();
+    };
   }, []);
-
-  const benefits = [
-    {
-      icon: <CreditCard size={28} />,
-      title: "Până la 10 Rate",
-      desc: "Eșalonare flexibilă pentru orice tip de tratament complex."
-    },
-    {
-      icon: <CheckCircle2 size={28} />,
-      title: "Aprobare Rapidă",
-      desc: "Proces simplificat, fără birocrație inutilă."
-    },
-    {
-      icon: <ShieldCheck size={28} />,
-      title: "Siguranță Totală",
-      desc: "Parteneriate cu instituții financiare de încredere."
-    },
-    {
-      icon: <Wallet size={28} />,
-      title: "Fără Presiune",
-      desc: "Prioritizați sănătatea fără a compromite bugetul personal."
-    }
-  ];
 
   return (
     <div className="min-h-screen bg-cream selection:bg-gold selection:text-white">
@@ -119,7 +123,7 @@ export default function PlataRate() {
         {/* Background Video */}
         <motion.video 
           style={{ opacity: videoOpacity }}
-          src="https://www.pexels.com/ro-ro/download/video/4320417/" 
+          src="https://www.pexels.com/ro-ro/download/video/6528790/" 
           autoPlay 
           loop 
           muted 

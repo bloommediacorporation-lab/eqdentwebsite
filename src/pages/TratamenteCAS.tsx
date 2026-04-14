@@ -6,6 +6,29 @@ import { useScroll, useMotionValueEvent, motion, useTransform } from 'motion/rea
 import { ArrowUpRight, CheckCircle2, FileText, CreditCard, UserCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
+const preventieItems = [
+  {
+    title: "Consultații periodice",
+    desc: "Pentru monitorizarea constantă a sănătății orale."
+  },
+  {
+    title: "Detartraj cu ultrasunete",
+    desc: "Îndepărtarea tartrului într-un mod eficient și nedureros."
+  },
+  {
+    title: "Periaj profesional",
+    desc: "Pentru o curățare profundă și o respirație proaspătă."
+  },
+  {
+    title: "Fluorizări",
+    desc: "Întărirea smalțului și prevenirea cariilor."
+  },
+  {
+    title: "Sigilări dentare",
+    desc: "Pentru dinții copiilor, ca măsură de prevenție împotriva cariilor."
+  }
+];
+
 export default function TratamenteCAS() {
   const { scrollY } = useScroll();
   const [isScrolled, setIsScrolled] = useState(false);
@@ -49,37 +72,18 @@ export default function TratamenteCAS() {
       smoothWheel: true,
     });
 
+    let rafId: number;
     function raf(time: number) {
       lenis.raf(time);
-      requestAnimationFrame(raf);
+      rafId = requestAnimationFrame(raf);
     }
 
-    requestAnimationFrame(raf);
-    return () => lenis.destroy();
+    rafId = requestAnimationFrame(raf);
+    return () => {
+      cancelAnimationFrame(rafId);
+      lenis.destroy();
+    };
   }, []);
-
-  const preventieItems = [
-    {
-      title: "Consultații periodice",
-      desc: "Pentru monitorizarea constantă a sănătății orale."
-    },
-    {
-      title: "Detartraj cu ultrasunete",
-      desc: "Îndepărtarea tartrului într-un mod eficient și nedureros."
-    },
-    {
-      title: "Periaj profesional",
-      desc: "Pentru o curățare profundă și o respirație proaspătă."
-    },
-    {
-      title: "Fluorizări",
-      desc: "Întărirea smalțului și prevenirea cariilor."
-    },
-    {
-      title: "Sigilări dentare",
-      desc: "Pentru dinții copiilor, ca măsură de prevenție împotriva cariilor."
-    }
-  ];
 
   return (
     <div className="min-h-screen bg-cream selection:bg-gold selection:text-white">

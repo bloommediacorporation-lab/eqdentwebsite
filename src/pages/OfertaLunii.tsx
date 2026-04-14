@@ -6,6 +6,13 @@ import { useScroll, useMotionValueEvent, motion, useTransform } from 'motion/rea
 import { ArrowUpRight, Check } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
+const features = [
+  "Calitate germană de încredere, recunoscută la nivel internațional",
+  "Biocompatibilitate ridicată – risc minim de respingere, integrare osoasă optimă",
+  "Longevitate și stabilitate excelentă, chiar și în condiții solicitante",
+  "Rezultat estetic natural, adaptat perfect structurii dentare"
+];
+
 export default function OfertaLunii() {
   const { scrollY } = useScroll();
   const [isScrolled, setIsScrolled] = useState(false);
@@ -49,21 +56,18 @@ export default function OfertaLunii() {
       smoothWheel: true,
     });
 
+    let rafId: number;
     function raf(time: number) {
       lenis.raf(time);
-      requestAnimationFrame(raf);
+      rafId = requestAnimationFrame(raf);
     }
 
-    requestAnimationFrame(raf);
-    return () => lenis.destroy();
+    rafId = requestAnimationFrame(raf);
+    return () => {
+      cancelAnimationFrame(rafId);
+      lenis.destroy();
+    };
   }, []);
-
-  const features = [
-    "Calitate germană de încredere, recunoscută la nivel internațional",
-    "Biocompatibilitate ridicată – risc minim de respingere, integrare osoasă optimă",
-    "Longevitate și stabilitate excelentă, chiar și în condiții solicitante",
-    "Rezultat estetic natural, adaptat perfect structurii dentare"
-  ];
 
   return (
     <div className="min-h-screen bg-cream selection:bg-gold selection:text-white">

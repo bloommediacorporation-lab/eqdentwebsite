@@ -5,6 +5,10 @@ import Lenis from 'lenis';
 import { useScroll, useMotionValueEvent, motion, useTransform, AnimatePresence } from 'motion/react';
 import { MapPin, Phone, Mail, Clock, ArrowUpRight, Calendar as CalendarIcon, ChevronLeft, ChevronRight } from 'lucide-react';
 
+const monthNames = ["Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie", "Iulie", "August", "Septembrie", "Octombrie", "Noiembrie", "Decembrie"];
+const dayNames = ["Lu", "Ma", "Mi", "Jo", "Vi", "Sâ", "Du"];
+const timeSlots = ["09:00", "10:00", "11:00", "12:00", "14:00", "15:00", "16:00", "17:00", "18:00"];
+
 const DatePicker = () => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
@@ -13,10 +17,6 @@ const DatePicker = () => {
   const daysInMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0).getDate();
   const firstDayOfMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1).getDay();
   const startDay = firstDayOfMonth === 0 ? 6 : firstDayOfMonth - 1; // Adjust for Monday start
-
-  const monthNames = ["Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie", "Iulie", "August", "Septembrie", "Octombrie", "Noiembrie", "Decembrie"];
-  const dayNames = ["Lu", "Ma", "Mi", "Jo", "Vi", "Sâ", "Du"];
-  const timeSlots = ["09:00", "10:00", "11:00", "12:00", "14:00", "15:00", "16:00", "17:00", "18:00"];
 
   const prevMonth = () => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1));
   const nextMonth = () => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1));
@@ -48,13 +48,13 @@ const DatePicker = () => {
         <div className="bg-cream/30 border border-charcoal/10 rounded-xl p-4 md:p-6">
           {/* Calendar Header */}
           <div className="flex justify-between items-center mb-6">
-            <button type="button" onClick={prevMonth} className="p-2 hover:bg-white rounded-full transition-colors text-charcoal/60 hover:text-charcoal">
+            <button type="button" onClick={prevMonth} aria-label="Luna anterioară" className="p-2 hover:bg-white rounded-full transition-colors text-charcoal/60 hover:text-charcoal">
               <ChevronLeft size={20} />
             </button>
             <h4 className="font-serif text-lg text-charcoal">
               {monthNames[currentMonth.getMonth()]} {currentMonth.getFullYear()}
             </h4>
-            <button type="button" onClick={nextMonth} className="p-2 hover:bg-white rounded-full transition-colors text-charcoal/60 hover:text-charcoal">
+            <button type="button" onClick={nextMonth} aria-label="Luna următoare" className="p-2 hover:bg-white rounded-full transition-colors text-charcoal/60 hover:text-charcoal">
               <ChevronRight size={20} />
             </button>
           </div>
@@ -180,13 +180,17 @@ export default function Programare() {
       smoothWheel: true,
     });
 
+    let rafId: number;
     function raf(time: number) {
       lenis.raf(time);
-      requestAnimationFrame(raf);
+      rafId = requestAnimationFrame(raf);
     }
 
-    requestAnimationFrame(raf);
-    return () => lenis.destroy();
+    rafId = requestAnimationFrame(raf);
+    return () => {
+      cancelAnimationFrame(rafId);
+      lenis.destroy();
+    };
   }, []);
 
   return (

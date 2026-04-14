@@ -79,7 +79,11 @@ export const Navbar = ({ opacity, isScrolled, isOverDark }: { opacity: any, isSc
             onMouseEnter={() => setIsMenuHovered(true)}
             onMouseLeave={() => setIsMenuHovered(false)}
           >
-            <button className="flex items-center gap-2 hover:opacity-70 transition-opacity">
+            <button 
+              className="flex items-center gap-2 hover:opacity-70 transition-opacity"
+              aria-haspopup="true"
+              aria-expanded={isMenuHovered}
+            >
               Meniu <Menu size={18} />
             </button>
 
@@ -173,6 +177,7 @@ export const Navbar = ({ opacity, isScrolled, isOverDark }: { opacity: any, isSc
         {/* Mobile Menu Button */}
         <button 
           onClick={() => setIsMobileMenuOpen(true)}
+          aria-label="Deschide meniul principal"
           className={`lg:hidden flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 shrink-0 rounded-full border transition-colors ${isOverDark ? 'border-cream text-cream' : (isScrolled ? 'border-charcoal/20 text-charcoal' : 'border-white/20 text-white')}`}
         >
           <Menu size={18} />
@@ -210,6 +215,7 @@ export const Navbar = ({ opacity, isScrolled, isOverDark }: { opacity: any, isSc
               </Link>
               <button 
                 onClick={() => setIsMobileMenuOpen(false)}
+                aria-label="Închide meniul principal"
                 className="w-10 h-10 rounded-full border border-charcoal/20 flex items-center justify-center text-charcoal hover:bg-charcoal hover:text-cream transition-colors"
               >
                 <X size={20} />
