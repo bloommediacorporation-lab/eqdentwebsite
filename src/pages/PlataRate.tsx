@@ -70,6 +70,14 @@ export default function PlataRate() {
   const textRightX = useTransform(scrollY, [0, 600], ["0vw", "50vw"]);
   const mainTextOpacity = useTransform(scrollY, [0, 500], [1, 0]);
 
+  const darkSectionsRef = useRef<Element[]>([]);
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      darkSectionsRef.current = Array.from(document.querySelectorAll('[data-theme="dark"]'));
+    }, 100);
+    return () => clearTimeout(timeout);
+  }, []);
+
   useMotionValueEvent(scrollY, "change", (latest) => {
     if (latest > 50) {
       setIsScrolled(true);
@@ -78,16 +86,15 @@ export default function PlataRate() {
     }
 
     let overDark = latest < 150;
-
-    const darkSections = document.querySelectorAll('[data-theme="dark"]');
     const navHeight = 100;
     
-    darkSections.forEach(section => {
-      const rect = section.getBoundingClientRect();
+    for (let i = 0; i < darkSectionsRef.current.length; i++) {
+      const rect = darkSectionsRef.current[i].getBoundingClientRect();
       if (rect.top <= navHeight && rect.bottom >= 50) {
         overDark = true;
+        break;
       }
-    });
+    }
 
     setIsOverDark(overDark);
   });

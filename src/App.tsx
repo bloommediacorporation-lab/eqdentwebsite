@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform, useMotionTemplate, useMotionValueEvent } from 'motion/react';
 import { ArrowUpRight, Menu, Plus, ChevronDown } from 'lucide-react';
 import Lenis from 'lenis';
@@ -162,14 +162,14 @@ const services = [
   { title: "Îngrijire Generală", desc: "Întreținere completă, prevenție și tratamente restaurative pentru o sănătate de durată." }
 ];
 
-const RevealWord = ({ children, progress, range }: { children: string, progress: any, range: [number, number] }) => {
+const RevealWord = React.memo(({ children, progress, range }: { children: string, progress: any, range: [number, number] }) => {
   const opacity = useTransform(progress, range, [0.15, 1]);
   return (
-    <motion.span style={{ opacity }} className="mr-[0.25em] inline-block">
+    <motion.span style={{ opacity }} className="mr-[0.25em] inline-block will-change-transform">
       {children}
     </motion.span>
   );
-};
+});
 
 const PremiumRevealText = () => {
   const container = useRef<HTMLDivElement>(null);
@@ -405,37 +405,56 @@ export default function App() {
     return false;
   });
 
+  const darkSectionsRef = useRef<Element[]>([]);
+  const windowDims = useRef({ width: window.innerWidth, height: window.innerHeight });
+
+  useEffect(() => {
+    const updateDims = () => {
+      windowDims.current = { width: window.innerWidth, height: window.innerHeight };
+      darkSectionsRef.current = Array.from(document.querySelectorAll('[data-theme="dark"]'));
+    };
+    updateDims();
+    window.addEventListener('resize', updateDims);
+    // Refresh dark sections slightly later to ensure full render
+    const timeout = setTimeout(updateDims, 100);
+    return () => {
+      window.removeEventListener('resize', updateDims);
+      clearTimeout(timeout);
+    };
+  }, []);
+
   useMotionValueEvent(scrollY, "change", (latest) => {
-    const heroEnd = window.innerWidth < 768 ? window.innerHeight * 0.5 : window.innerHeight * 2; // Approximate end of the sticky hero section
+    const { width, height } = windowDims.current;
+    const heroEnd = width < 768 ? height * 0.5 : height * 2; // Approximate end of the sticky hero section
     
     if (latest < 50) {
       setNavOpacity(1);
       setIsScrolled(false);
     } else if (latest >= 50 && latest < heroEnd) {
-      setNavOpacity(window.innerWidth < 768 ? 1 : 0);
-      setIsScrolled(window.innerWidth < 768 ? true : false);
+      setNavOpacity(width < 768 ? 1 : 0);
+      setIsScrolled(width < 768 ? true : false);
     } else {
       setNavOpacity(1);
       setIsScrolled(true);
     }
 
     // Check if navbar is over a dark section
-    const darkSections = document.querySelectorAll('[data-theme="dark"]');
     let overDark = false;
     
     // On mobile, the hero section video is full screen, so the background is dark
-    if (window.innerWidth < 768 && latest < heroEnd) {
+    if (width < 768 && latest < heroEnd) {
       overDark = true;
     }
     
     const navHeight = 100; // approximate navbar height
     
-    darkSections.forEach(section => {
-      const rect = section.getBoundingClientRect();
+    for (let i = 0; i < darkSectionsRef.current.length; i++) {
+      const rect = darkSectionsRef.current[i].getBoundingClientRect();
       if (rect.top <= navHeight && rect.bottom >= 50) {
         overDark = true;
+        break; // Stop loop early for performance
       }
-    });
+    }
     
     setIsOverDark(overDark);
   });
